@@ -40,13 +40,16 @@ class WxPayJsPay
 	public function GetOpenid($code='')
 	{
 		//通过code获得openid
-		if (empty($code)){
+		if (empty($code)&&!isset($_GET['code'])){
 			//触发微信返回code码
 			$baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING']);
 			$url = $this->__CreateOauthUrlForCode($baseUrl);
 			Header("Location: $url");
 			exit();
 		} else {
+			if($_GET['code']){
+				$code = $_GET['code'];
+			}
 			//获取code码，以获取openid
 			$openid = $this->getOpenidFromMp($code);
 			return $openid;
